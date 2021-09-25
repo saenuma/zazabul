@@ -25,6 +25,7 @@ import (
 	"github.com/pkg/errors"
 	"os"
 	"io/ioutil"
+	"fmt"
 )
 
 
@@ -58,34 +59,62 @@ func ParseConfig(str string) (Config, error) {
 
 	lines := strings.Split(str, "\n")
 
-	index := 0
 	item := ConfigItem{}
 	var comment string
 
-	for {
-		if index >= len(lines) {
-			break
-		}
+	// for {
 
-		line := strings.TrimSpace(lines[index])
+	// 	line := strings.TrimSpace(lines[index])
+
+	// 	if strings.HasPrefix(line, "//") {
+	// 		comment += line + "\n"
+	// 	} else if line != "" {
+	// 		if comment != "" {
+	// 			item.Comment = comment
+	// 			comment = ""
+	// 		}
+	// 		lineParts := strings.Split(line, ":")
+	// 		if len(lineParts) != 2 {
+	// 			return conf, errors.New("Each config line (not a comment line) must only contain one ':'.")
+	// 		}
+	// 		item.Name = strings.ToLower(strings.TrimSpace(lineParts[0]))
+	// 		item.Value = strings.TrimSpace(lineParts[1])
+	// 		items = append(items, item)
+	// 	}
+
+	// 	index += 1
+	// }
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
 
 		if strings.HasPrefix(line, "//") {
 			comment += line + "\n"
 		} else if line != "" {
+			colonIndex := 0
+
+			for i, ch := range line {
+				if fmt.Sprintf("%c", ch) == ":" {
+					colonIndex = i
+					break
+				}
+			}
+
+			fmt.Println(colonIndex)
+
+			if colonIndex == 0 {
+				continue
+			}
+
 			if comment != "" {
 				item.Comment = comment
 				comment = ""
 			}
-			lineParts := strings.Split(line, ":")
-			if len(lineParts) != 2 {
-				return conf, errors.New("Each config line (not a comment line) must only contain one ':'.")
-			}
-			item.Name = strings.ToLower(strings.TrimSpace(lineParts[0]))
-			item.Value = strings.TrimSpace(lineParts[1])
+
+			item.Name = strings.ToLower(strings.TrimSpace(line[0: colonIndex]))
+			item.Value = strings.TrimSpace(line[colonIndex + 1 : ])
 			items = append(items, item)
 		}
-
-		index += 1
 	}
 	conf.Items = items
 	return conf, nil

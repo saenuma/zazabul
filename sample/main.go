@@ -19,6 +19,9 @@ region: us-central1
 // zone usually derived from the regions and ending with -a or -b or -c
 zone: us-central1-a
 
+// test of colon
+addr: https://example.com
+
 
 `
 func main() {
@@ -26,6 +29,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(conf)
 
 	fmt.Println("email: ", conf.Get("email"))
 
