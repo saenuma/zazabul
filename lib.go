@@ -24,7 +24,6 @@ import (
 	"strings"
 	"github.com/pkg/errors"
 	"os"
-	"io/ioutil"
 	"fmt"
 )
 
@@ -43,9 +42,9 @@ type Config struct {
 
 // Returns a config written in the zazabul format.
 func LoadConfigFile(path string) (Config, error) {
-	raw, err := ioutil.ReadFile(path)
+	raw, err := os.ReadFile(path)
 	if err != nil {
-		return Config{}, errors.Wrap(err, "ioutil error")
+		return Config{}, errors.Wrap(err, "os error")
 	}
 
 	return ParseConfig(string(raw))
@@ -99,8 +98,6 @@ func ParseConfig(str string) (Config, error) {
 					break
 				}
 			}
-
-			fmt.Println(colonIndex)
 
 			if colonIndex == 0 {
 				continue
@@ -158,9 +155,9 @@ func (conf *Config) Write(path string) error {
 	for _, item := range conf.Items {
 		outString += item.Comment + item.Name + ": " + item.Value + "\n\n\n"
 	}
-	err := ioutil.WriteFile(path, []byte(outString), 0777)
+	err := os.WriteFile(path, []byte(outString), 0777)
 	if err != nil {
-		return errors.Wrap(err, "ioutil error")
+		return errors.Wrap(err, "os error")
 	}
 	return nil
 }
