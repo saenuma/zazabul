@@ -59,31 +59,8 @@ func ParseConfig(str string) (Config, error) {
 	lines := strings.Split(str, "\n")
 
 	item := ConfigItem{}
+
 	var comment string
-
-	// for {
-
-	// 	line := strings.TrimSpace(lines[index])
-
-	// 	if strings.HasPrefix(line, "//") {
-	// 		comment += line + "\n"
-	// 	} else if line != "" {
-	// 		if comment != "" {
-	// 			item.Comment = comment
-	// 			comment = ""
-	// 		}
-	// 		lineParts := strings.Split(line, ":")
-	// 		if len(lineParts) != 2 {
-	// 			return conf, errors.New("Each config line (not a comment line) must only contain one ':'.")
-	// 		}
-	// 		item.Name = strings.ToLower(strings.TrimSpace(lineParts[0]))
-	// 		item.Value = strings.TrimSpace(lineParts[1])
-	// 		items = append(items, item)
-	// 	}
-
-	// 	index += 1
-	// }
-
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 
@@ -122,10 +99,17 @@ func ParseConfig(str string) (Config, error) {
 // the Config object.
 func (conf *Config) Update(items map[string]string) {
 	for k, v := range items {
+		done := false
 		for i, item := range conf.Items {
 			if k == item.Name {
 				conf.Items[i] = ConfigItem{item.Name, item.Comment, v}
+				done = true
+				break
 			}
+		}
+
+		if done == false {
+			conf.Items = append(conf.Items, ConfigItem{k, "", v})
 		}
 	}
 }

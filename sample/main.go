@@ -36,6 +36,7 @@ func main() {
 	conf.Update(map[string]string {
 		"email": "banban@banban.com",
 		"zone": "us-central1-c",
+		"jaker": "widower",
 	})
 
 	fmt.Println("email: ", conf.Get("email"))
