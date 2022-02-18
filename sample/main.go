@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bankole7782/zazabul"
+	"github.com/saenuma/zazabul"
 	"fmt"
 )
 

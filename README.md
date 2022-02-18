@@ -2,7 +2,7 @@
 
 A configuration file format
 
-[![GoDoc](https://godoc.org/github.com/bankole7782/zazabul?status.svg)](https://godoc.org/github.com/bankole7782/zazabul)
+[![GoDoc](https://godoc.org/github.com/saenuma/zazabul?status.svg)](https://godoc.org/github.com/saenuma/zazabul)
 
 ## Sample Configuration
 ```

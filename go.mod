@@ -1,4 +1,4 @@
-module github.com/bankole7782/zazabul
+module github.com/saenuma/zazabul
 
 go 1.15
 
